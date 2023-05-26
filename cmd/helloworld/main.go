@@ -39,9 +39,9 @@ func main() {
 		defer wg.Done()
 	}()
 
-	if err := cont.Await(5 * time.Second); err != nil {
+	if err := cont.Await(2 * time.Second); err != nil {
 		cancel()
-		logger.Fatal(err)
+		logger.Println(err)
 	}
 
 	if err := cont.Process(b); err != nil {
