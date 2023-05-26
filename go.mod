@@ -1,4 +1,4 @@
-module local.test
+module github.com/JacobLuciani/excessiveprint
 
 go 1.20
 
