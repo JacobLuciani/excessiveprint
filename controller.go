@@ -40,6 +40,10 @@ func (c *controller) Run() {
 	}
 }
 
+func (c *controller) Stop() {
+	c.ready = false
+}
+
 func (c *controller) print(val interface{}) {
 	c.logger.Println(val)
 }

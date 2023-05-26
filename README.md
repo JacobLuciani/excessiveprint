@@ -7,3 +7,4 @@ This is a glorified hello world module that makes use of a couple of interesting
 - unit tests
 - interface insertion (multiple types of controller)
 - db logging
+- generic await
