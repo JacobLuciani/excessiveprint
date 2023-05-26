@@ -7,9 +7,13 @@ import (
 )
 
 func Await(ready func() bool, timeout time.Duration) error {
-	readyChan := make(chan struct{})
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	return AwaitWithContext(context.Background(), ready, timeout)
+}
+
+func AwaitWithContext(baseCtx context.Context, ready func() bool, timeout time.Duration) error {
+	ctx, cancel := context.WithTimeout(baseCtx, timeout)
 	defer cancel()
+	readyChan := make(chan struct{})
 
 	go func() {
 		for {
@@ -31,6 +35,17 @@ func Await(ready func() bool, timeout time.Duration) error {
 	case <-readyChan:
 		return nil
 	case <-ctx.Done():
+		return errors.New("timeout expired")
+	}
+}
+
+// TODO: make a generic for this
+// is this really necessary? just cuts down on some boilerplate I suppose
+func AwaitChan(inChan <-chan struct{}, timeout time.Duration) error {
+	select {
+	case <-inChan:
+		return nil
+	case <-time.After(timeout):
 		return errors.New("timeout expired")
 	}
 }

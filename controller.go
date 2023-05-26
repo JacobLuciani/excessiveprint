@@ -54,7 +54,7 @@ func (c *controller) Process(val interface{}) error {
 }
 
 func (c *controller) Await(timeout time.Duration) error {
-	return await.Await(func() bool {
+	return await.AwaitWithContext(c.ctx, func() bool {
 		return c.ready
 	}, timeout)
 }
