@@ -14,12 +14,12 @@ import (
 func main() {
 
 	i := map[string]interface{}{
-		"Field":  "hello",
-		"Target": "world",
+		"action": "hello",
+		"target": "world",
 	}
 
 	b := struct {
-		Field  string `mapstructure:"field"`
+		Action string `mapstructure:"action"`
 		Target string `mapstructure:"target"`
 	}{}
 
@@ -27,7 +27,7 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	logger := log.New(os.Stdout, "localtest: ", log.LstdFlags)
+	logger := log.New(os.Stdout, "excessiveprint: ", log.LstdFlags)
 
 	cont := controller.NewController(ctx, logger)
 
@@ -40,8 +40,7 @@ func main() {
 	}()
 
 	if err := cont.Await(2 * time.Second); err != nil {
-		cancel()
-		logger.Println(err)
+		logger.Fatal(err)
 	}
 
 	if err := cont.Process(b); err != nil {

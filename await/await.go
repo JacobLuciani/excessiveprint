@@ -3,6 +3,7 @@ package await
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 )
 
@@ -28,6 +29,7 @@ func AwaitWithContext(baseCtx context.Context, ready func() bool, timeout time.D
 				return
 			}
 			time.Sleep(1 * time.Second)
+			fmt.Println("still going")
 		}
 	}()
 
