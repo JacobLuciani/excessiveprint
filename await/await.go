@@ -22,6 +22,6 @@ func Await(ready func() bool, timeout time.Duration) error {
 	case <-readyChan:
 		return nil
 	case <-time.After(timeout):
-		return errors.New("timeout waiting for controller expired")
+		return errors.New("timeout expired")
 	}
 }
