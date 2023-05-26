@@ -5,6 +5,8 @@ import (
 	"errors"
 	"log"
 	"time"
+
+	"github.com/JacobLuciani/excessiveprint/await"
 )
 
 type controller struct {
@@ -52,24 +54,7 @@ func (c *controller) Process(val interface{}) error {
 }
 
 func (c *controller) Await(timeout time.Duration) error {
-	readyChan := make(chan struct{})
-
-	go func() {
-		for {
-			if c.ready {
-				c.logger.Println("controller now ready")
-				readyChan <- struct{}{}
-				return
-			}
-			c.logger.Println("controller not ready")
-			time.Sleep(1 * time.Second)
-		}
-	}()
-
-	select {
-	case <-readyChan:
-		return nil
-	case <-time.After(timeout):
-		return errors.New("timeout waiting for controller expired")
-	}
+	return await.Await(func() bool {
+		return c.ready
+	}, timeout)
 }
